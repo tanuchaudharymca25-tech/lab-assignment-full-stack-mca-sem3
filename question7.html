@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>University Finder</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #eee;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .university {
+            background: white;
+            padding: 15px;
+            margin: 10px auto;
+            width: 70%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>University Finder</h1>
+
+<input type="text" id="country" placeholder="Enter country name">
+<button onclick="searchUniversity()">Search</button>
+
+<div id="result"></div>
+
+<script>
+    async function searchUniversity() {
+        let country = document.getElementById("country").value.trim();
+
+        if (!country) {
+            alert("Enter country name");
+            return;
+        }
+
+        let result = document.getElementById("result");
+        result.innerHTML = "Loading...";
+
+        try {
+            let response = await fetch(
+                "https://universities.hipolabs.com/search?country=" +
+                encodeURIComponent(country)
+            );
+
+            let data = await response.json();
+
+            result.innerHTML = "";
+
+            if (data.length === 0) {
+                result.innerHTML = "No universities found.";
+                return;
+            }
+
+            data.forEach(uni => {
+                let div = document.createElement("div");
+                div.className = "university";
+
+                let name = document.createElement("h3");
+                name.textContent = uni.name;
+
+                let state = document.createElement("p");
+                state.textContent = "State: " +
+                    (uni["state-province"] || "Not available");
+
+                let link = document.createElement("a");
+                link.textContent = "Visit Website";
+                link.href = uni.web_pages[0] || "#";
+                link.target = "_blank";
+
+                div.append(name, state, link);
+                result.appendChild(div);
+            });
+
+        } catch (error) {
+            result.innerHTML = "Error fetching data.";
+        }
+    }
+</script>
+
+</body>
+</html>

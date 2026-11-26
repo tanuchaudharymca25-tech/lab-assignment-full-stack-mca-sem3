@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chessboard</title>
+</head>
+<body>
+
+<h2 align="center">Chessboard</h2>
+
+<div id="board" style="
+    width: 400px;
+    height: 400px;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    border: 2px solid black;
+    margin: auto;">
+</div>
+
+<script>
+    let board = document.getElementById("board");
+
+    for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+
+            let square = document.createElement("div");
+
+            if ((row + col) % 2 == 0) {
+                square.style.backgroundColor = "white";
+            } else {
+                square.style.backgroundColor = "black";
+            }
+
+            board.appendChild(square);
+        }
+    }
+</script>
+
+</body>
+</html>

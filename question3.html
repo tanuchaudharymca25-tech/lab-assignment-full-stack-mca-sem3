@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            text-align: center;
+        }
+
+        .container {
+            width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input {
+            padding: 10px;
+            width: 60%;
+        }
+
+        button {
+            padding: 8px;
+            margin: 3px;
+            cursor: pointer;
+        }
+
+        li {
+            list-style: none;
+            background: #eee;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>My To-Do List</h2>
+
+    <input type="text" id="task" placeholder="Enter task">
+    <button onclick="addTask()">Add</button>
+
+    <ul id="list"></ul>
+</div>
+
+<script>
+    function addTask() {
+        let input = document.getElementById("task");
+        let value = input.value.trim();
+
+        if (value === "") {
+            alert("Enter a task");
+            return;
+        }
+
+        let li = document.createElement("li");
+
+        let checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+
+        checkbox.onchange = function() {
+            text.classList.toggle("completed");
+        };
+
+        let text = document.createElement("span");
+        text.innerText = value;
+
+        let del = document.createElement("button");
+        del.innerText = "Delete";
+        del.onclick = function() {
+            li.remove();
+        };
+
+        let up = document.createElement("button");
+        up.innerText = "Up";
+        up.onclick = function() {
+            if (li.previousElementSibling) {
+                li.parentNode.insertBefore(li, li.previousElementSibling);
+            }
+        };
+
+        let down = document.createElement("button");
+        down.innerText = "Down";
+        down.onclick = function() {
+            if (li.nextElementSibling) {
+                li.parentNode.insertBefore(li.nextElementSibling, li);
+            }
+        };
+
+        li.append(checkbox, text, del, up, down);
+        document.getElementById("list").appendChild(li);
+
+        input.value = "";
+    }
+</script>
+
+</body>
+</html>

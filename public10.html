@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Store</title>
+</head>
+<body>
+
+<h2>Product List</h2>
+<div id="products"></div>
+
+<h2>Add New Product</h2>
+
+<input id="name" placeholder="Product Name">
+<input id="price" type="number" placeholder="Price">
+<input id="rating" type="number" step="0.1" placeholder="Rating">
+
+<button onclick="addProduct()">Add Product</button>
+
+<script>
+    async function loadProducts() {
+        let res = await fetch("/api/products");
+        let data = await res.json();
+
+        let output = "";
+
+        data.forEach(p => {
+            output += `
+                <div>
+                    <h3>${p.name}</h3>
+                    <p>Price: ${p.price}</p>
+                    <p>Rating: ${p.rating}</p>
+                </div>
+            `;
+        });
+
+        document.getElementById("products").innerHTML = output;
+    }
+
+    async function addProduct() {
+        let product = {
+            name: document.getElementById("name").value,
+            price: document.getElementById("price").value,
+            rating: document.getElementById("rating").value
+        };
+
+        let res = await fetch("/api/products", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(product)
+        });
+
+        if (res.ok) {
+            loadProducts();
+            alert("Product added successfully!");
+        }
+    }
+
+    loadProducts();
+</script>
+
+</body>
+</html>

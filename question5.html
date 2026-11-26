@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Snake and Ladder</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            width: 400px;
+            margin: 20px auto;
+        }
+
+        .cell {
+            height: 40px;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: lightyellow;
+        }
+
+        button {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Snake and Ladder</h2>
+
+<h3>Position: <span id="position">0</span></h3>
+
+<div id="board"></div>
+
+<button onclick="rollDice()">Roll Dice</button>
+<p id="result"></p>
+
+<script>
+    let position = 0;
+
+    let snakes = {
+        25: 5,
+        47: 19,
+        65: 34,
+        87: 36
+    };
+
+    let ladders = {
+        3: 22,
+        8: 30,
+        28: 55,
+        58: 80
+    };
+
+    let board = document.getElementById("board");
+
+    for (let i = 100; i >= 1; i--) {
+        let cell = document.createElement("div");
+        cell.className = "cell";
+        cell.id = "cell" + i;
+        cell.innerText = i;
+        board.appendChild(cell);
+    }
+
+    function rollDice() {
+        let dice = Math.floor(Math.random() * 6) + 1;
+
+        let next = position + dice;
+
+        if (next > 100) {
+            document.getElementById("result").innerText =
+                "Dice: " + dice + " - Try again!";
+            return;
+        }
+
+        position = next;
+
+        if (snakes[position]) {
+            position = snakes[position];
+            alert("Snake! Move down.");
+        }
+
+        if (ladders[position]) {
+            position = ladders[position];
+            alert("Ladder! Move up.");
+        }
+
+        document.getElementById("position").innerText = position;
+        document.getElementById("result").innerText =
+            "You rolled: " + dice;
+
+        document.querySelectorAll(".cell").forEach(c => {
+            c.style.backgroundColor = "lightyellow";
+        });
+
+        document.getElementById("cell" + position).style.backgroundColor = "lightgreen";
+
+        if (position === 100) {
+            alert("Congratulations! You won!");
+        }
+    }
+</script>
+
+</body>
+</html>
